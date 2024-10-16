@@ -16,11 +16,12 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 - ESP32 development environment
-- SSD1306 OLED display
-- MPU6050 Angle sensor
-- DS18B20 Temperature sensor
-- DS3231RTC Real time clock
-- A button
+- 1x ESP32
+- 1x SSD1306 OLED display
+- 1x MPU6050 Angle sensor
+- 1x DS18B20 Temperature sensor
+- 1x DS3231RTC Real time clock
+- 1x Button
 - Resistors described in the schematic
 - Motorcycle :)
 
