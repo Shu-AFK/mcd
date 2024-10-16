@@ -16,7 +16,12 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 - ESP32 development environment
-- OLED Display supported by ESP32
+- SSD1306 OLED display
+- MPU6050 Angle sensor
+- DS18B20 Temperature sensor
+- DS3231RTC Real time clock
+- A button
+- Resistors described in the schematic
 - Motorcycle :)
 
 ### Installing
