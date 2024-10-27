@@ -3,6 +3,7 @@
 #include <array>
 
 std::array<Features, MAX_ELEMENTS_ON_SCREEN> displayed;
+Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 void initOLED() {
     if (!oled.begin(SSD1306_SWITCHCAPVCC, OLED_ADDRESS)) {

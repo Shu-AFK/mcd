@@ -1,6 +1,7 @@
 #include "rtc.h"
 
 RTC_DS3231 rtc;
+char daysOfTheWeek[7][12] = {"Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"};
 
 void initRTC() {
     // Initialize RTC

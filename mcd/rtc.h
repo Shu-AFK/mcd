@@ -6,8 +6,6 @@
 
 #include <RTClib.h>
 
-char daysOfTheWeek[7][12] = {"Sonntag", "Montag", "Dienstag", "Mittwoch", "Donnerstag", "Freitag", "Samstag"};
-
 void initRTC();
 void oledPrintTime();
 void oledPrintDate();

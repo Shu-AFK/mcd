@@ -9,7 +9,7 @@
 
 #include <stdint.h>
 
-Adafruit_SSD1306 oled(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
+extern Adafruit_SSD1306 oled;
 
 enum Features {
     Time,
