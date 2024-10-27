@@ -4,6 +4,8 @@
 #include "temp.h"
 #include "mpu6050.h"
 
+int buttonState = 0;
+
 void setup() {
   Serial.begin(115200);
   
@@ -14,9 +16,17 @@ void setup() {
   initMPU6050();
   initRTC();
   initTEMP();
+
+  pinMode(BUTTON_PIN, INPUT);
 }
 
 void loop() {
+  buttonState = digitalRead(BUTTON_PIN);
+
+  if (buttonState == HIGH) {
+      handleButtonPress();
+  }
+
   oled.clearDisplay();
 
   oledPrintTime();

@@ -19,4 +19,6 @@
 
 #define REFRESH_DELAY 1000
 
+#define BUTTON_PIN 34
+
 #endif //MCD_CONFIG_H
