@@ -4,7 +4,11 @@
 #include "temp.h"
 #include "mpu6050.h"
 
-int buttonState = 0;
+int buttonState = LOW;
+int lastButtonState = LOW;
+
+unsigned long lastDebounceTime = 0;
+unsigned long previousRefreshTime = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -21,20 +25,35 @@ void setup() {
 }
 
 void loop() {
-  buttonState = digitalRead(BUTTON_PIN);
+  int reading = digitalRead(BUTTON_PIN);
 
-  if (buttonState == HIGH) {
-      handleButtonPress();
+  // Debounce Logic
+  if (reading != lastButtonState) {
+    lastDebounceTime = millis();
   }
 
-  oled.clearDisplay();
+  if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
+    if (reading != buttonState) {
+      buttonState = reading;
 
-  oledPrintTime();
-  oledPrintDate();
-  oledPrintWeekday();
-  oledPrintTemp();
-  oledPrintRollAngle();
+      if (buttonState == HIGH) {
+        handleButtonPress();
+      }
+    }
+  }
 
-  oled.display();
-  delay(REFRESH_DELAY);
+  // Update Display Based on REFRESH_DELAY
+  if (millis() - previousRefreshTime >= REFRESH_DELAY) {
+    previousRefreshTime = millis();
+
+    oled.clearDisplay();
+    oledPrintTime();
+    oledPrintDate();
+    oledPrintWeekday();
+    oledPrintTemp();
+    oledPrintRollAngle();
+    oled.display();
+  }
+
+  lastButtonState = reading;
 }
