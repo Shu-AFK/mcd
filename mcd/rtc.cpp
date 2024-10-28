@@ -15,7 +15,7 @@ void initRTC() {
 }
 
 void oledPrintTime() {
-    int cursorPos = getCursorPos(Date);
+    int cursorPos = getCursorPos(Time);
     if (cursorPos < 0) {
         return;
     }

@@ -11,8 +11,8 @@ void initOLED() {
         for(;;);
     }
 
-    oled.clearDisplay();  // Clear the buffer
-    oled.display();       // Show the cleared screen
+    oled.clearDisplay();
+    oled.display();
 
     for(int i = 0; i < MAX_ELEMENTS_ON_SCREEN; i++) {
         displayed[i] = static_cast<Features>(i);

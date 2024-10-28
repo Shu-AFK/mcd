@@ -14,7 +14,7 @@ void setup() {
   Serial.begin(115200);
   
   Wire.begin();
-  Wire.setClock(400000L);
+  Wire.setClock(L2C_CLOCK_SPEED);
 
   initOLED();
   initMPU6050();

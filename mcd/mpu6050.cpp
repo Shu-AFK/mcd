@@ -8,8 +8,8 @@ float getGyro(int16_t raw) { return raw / 131.0; }    // MPU6050 scale factor fo
 
 void initMPU6050() {
     Wire.beginTransmission(MPU6050_ADDR);
-    Wire.write(0x6B); // PWR_MGMT_1 register
-    Wire.write(0);    // 0 wakes up the MPU6050
+    Wire.write(PWR_MGMT_1);
+    Wire.write(0); // Write 0 to PWR_MGMT_1 to wake up MPU6050
     Wire.endTransmission(true);
 }
 
