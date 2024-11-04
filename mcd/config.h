@@ -9,9 +9,9 @@
 #define OLED_ADDRESS 0x3C
 
 #define MAX_ELEMENTS_ON_SCREEN 4
-#define TEXT_SIZE 1
-#define TEXT_COLOR SSD1306_WHITE
-#define SPACE_BETWEEN_LINES 15
+#define TEXT_SIZE              1
+#define TEXT_COLOR             SSD1306_WHITE
+#define SPACE_BETWEEN_LINES    15
 
 #define TEMP_DATA_PIN 5
 
@@ -22,7 +22,11 @@
 
 #define REFRESH_DELAY 1000
 
-#define BUTTON_PIN 34
-#define DEBOUNCE_DELAY 50 
+#define BUTTON_PIN     34
+#define DEBOUNCE_DELAY 50
+
+#define RX            16
+#define TX            17
+#define GPS_BAUD_RATE 9600
 
 #endif //MCD_CONFIG_H

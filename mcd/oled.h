@@ -17,6 +17,10 @@ enum Features {
     Weekday,
     Temperature,
     RollAngle,
+    Speed,
+    Distance,
+    AverageSpeed,
+    Altitude,
     COUNT, // This will hold the number of features
 };
 

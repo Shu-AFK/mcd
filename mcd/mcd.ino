@@ -3,6 +3,7 @@
 #include "rtc.h"
 #include "temp.h"
 #include "mpu6050.h"
+#include "gps.h"
 
 int buttonState = LOW;
 int lastButtonState = LOW;
@@ -20,6 +21,7 @@ void setup() {
   initMPU6050();
   initRTC();
   initTEMP();
+  initGPS();
 
   pinMode(BUTTON_PIN, INPUT);
 }
@@ -42,6 +44,8 @@ void loop() {
     }
   }
 
+  updateGPS();
+
   // Update Display Based on REFRESH_DELAY
   if (millis() - previousRefreshTime >= REFRESH_DELAY) {
     previousRefreshTime = millis();
@@ -52,6 +56,10 @@ void loop() {
     oledPrintWeekday();
     oledPrintTemp();
     oledPrintRollAngle();
+    oledPrintSpeed();
+    oledPrintDistanceTraveled();
+    oledPrintAverageSpeed();
+    oledPrintAltitude();
     oled.display();
   }
 
