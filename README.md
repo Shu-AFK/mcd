@@ -5,9 +5,16 @@ information to the rider.
 
 ## Features
 
-- Display current time
-- Display ambient temperature
-- Display driving angle
+The MCD can display...
+- Current Time
+- Current Date
+- Weekday
+- Ambient Temperature
+- Roll Angle
+- Speed
+- Distance
+- Average Speed
+- Altitude
 
 ## Getting Started
 
@@ -21,7 +28,8 @@ These instructions will get you a copy of the project up and running on your loc
 - 1x MPU6050 Angle sensor
 - 1x DS18B20 Temperature sensor
 - 1x DS3231RTC Real time clock
-- 1x Button
+- 1x GY-NEO6MV2 GPS module
+- 2x Button
 - Resistors described in the schematic
 - Motorcycle :)
 
