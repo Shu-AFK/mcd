@@ -22,8 +22,9 @@
 
 #define REFRESH_DELAY 1000
 
-#define BUTTON_PIN     34
-#define DEBOUNCE_DELAY 50
+#define SKIP_BUTTON_PIN       34
+#define START_TIME_BUTTON_PIN 23
+#define DEBOUNCE_DELAY        50
 
 #define RX            16
 #define TX            17

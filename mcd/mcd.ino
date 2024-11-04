@@ -23,7 +23,8 @@ void setup() {
   initTEMP();
   initGPS();
 
-  pinMode(BUTTON_PIN, INPUT);
+  pinMode(SKIP_BUTTON_PIN, INPUT);
+  pinMode(START_TIME_BUTTON_PIN, INPUT);
 }
 
 void loop() {
