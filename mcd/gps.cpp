@@ -3,6 +3,10 @@
 TinyGPSPlus gps;
 HardwareSerial GPSSerial(1);
 
+DateTime travelTimeStart;
+DateTime travelTimeEnd;
+bool currentlyDriving = false;
+
 void updateGPS() {
     while (GPSSerial.available() > 0) {
         gps.encode(GPSSerial.read());
@@ -30,6 +34,16 @@ void oledPrintSpeed() {
     } else {
         oled.println("Speed: N/A");
     }
+}
+
+void handleGPSTimeButtonPress() {
+  currentlyDriving = !currentlyDriving;
+
+  if (currentlyDriving) {
+    travelTimeStart = rtc.now();
+  } else {
+    travelTimeEnd = rtc.now();
+  }
 }
 
 // TODO: Implement but the start time is needed

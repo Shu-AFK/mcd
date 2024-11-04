@@ -3,11 +3,13 @@
 
 #include "config.h"
 #include "oled.h"
+#include "rtc.h"
 
 #include <TinyGPS++.h>
 #include <HardwareSerial.h>
 
 void initGPS();
+void handleGPSTimeButtonPress();
 void oledPrintSpeed();
 void oledPrintDistanceTraveled();
 void oledPrintAverageSpeed();

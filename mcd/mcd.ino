@@ -5,11 +5,15 @@
 #include "mpu6050.h"
 #include "gps.h"
 
-int buttonState = LOW;
-int lastButtonState = LOW;
+int skipButtonState = LOW;
+int lastSkipButtonState = LOW;
+unsigned long lastSkipDebounceTime = 0;
 
-unsigned long lastDebounceTime = 0;
-unsigned long previousRefreshTime = 0;
+int startTimeButtonState = LOW;
+int lastStartTimeButtonState = LOW;
+unsigned long lastStartTimeDebounceTime = 0;
+
+unsigned long lastDisplayRefreshTime = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -28,28 +32,48 @@ void setup() {
 }
 
 void loop() {
-  int reading = digitalRead(BUTTON_PIN);
+  int skipReading = digitalRead(SKIP_BUTTON_PIN);
 
-  // Debounce Logic
-  if (reading != lastButtonState) {
-    lastDebounceTime = millis();
+  // Debounce logic for the Skip Button
+  if (skipReading != lastSkipButtonState) {
+    lastSkipDebounceTime = millis();
   }
 
-  if ((millis() - lastDebounceTime) > DEBOUNCE_DELAY) {
-    if (reading != buttonState) {
-      buttonState = reading;
+  if ((millis() - lastSkipDebounceTime) > DEBOUNCE_DELAY) {
+    if (skipReading != skipButtonState) {
+      skipButtonState = skipReading;
 
-      if (buttonState == HIGH) {
+      if (skipButtonState == HIGH) {
         handleButtonPress();
       }
     }
   }
 
+  lastSkipButtonState = skipReading;
+
+  int startTimeReading = digitalRead(START_TIME_BUTTON_PIN);
+
+  // Debounce logic for the Start Time Button
+  if (startTimeReading != lastStartTimeButtonState) {
+    lastStartTimeDebounceTime = millis();
+  }
+
+  if ((millis() - lastStartTimeDebounceTime) > DEBOUNCE_DELAY) {
+    if (startTimeReading != startTimeButtonState) {
+      startTimeButtonState = startTimeReading;
+
+      if (startTimeButtonState == HIGH) {
+        handleGPSTimeButtonPress();
+      }
+    }
+  }
+
+  lastStartTimeButtonState = startTimeReading;
+
   updateGPS();
 
-  // Update Display Based on REFRESH_DELAY
-  if (millis() - previousRefreshTime >= REFRESH_DELAY) {
-    previousRefreshTime = millis();
+  if (millis() - lastDisplayRefreshTime >= REFRESH_DELAY) {
+    lastDisplayRefreshTime = millis();
 
     oled.clearDisplay();
     oledPrintTime();
@@ -63,6 +87,4 @@ void loop() {
     oledPrintAltitude();
     oled.display();
   }
-
-  lastButtonState = reading;
 }
