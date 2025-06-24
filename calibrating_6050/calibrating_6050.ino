@@ -1,71 +1,86 @@
-#include <Wire.h>
+#include "I2Cdev.h"
+#include "MPU6050_6Axis_MotionApps20.h"
+#include "Wire.h"
 
-#define MPU6050_ADDR 0x68
-#define ACCEL_XOUT_H 0x3B
-#define GYRO_XOUT_H  0x43
-#define PWR_MGMT_1   0x6B
+MPU6050 mpu;
+
+#define INTERRUPT_PIN 2
+#define LED_PIN 13
+bool blinkState = false;
+
+bool dmpReady = false;
+uint8_t mpuIntStatus;
+uint8_t devStatus;
+uint16_t packetSize;
+uint16_t fifoCount;
+uint8_t fifoBuffer[64];
+
+
+Quaternion q;
+VectorInt16 aa;
+VectorInt16 aaReal;
+VectorInt16 aaWorld;
+VectorFloat gravity;
+float euler[3];
+float ypr[3];
+
+uint8_t teapotPacket[14] = { '$', 0x02, 0,0, 0,0, 0,0, 0,0, 0x00, 0x00, '\r', '\n' };
+
+volatile bool mpuInterrupt = false;
+void dmpDataReady() {
+    mpuInterrupt = true;
+}
 
 void setup() {
-  Serial.begin(115200);
-  
-  // Initialize I2C
-  Wire.begin();
-  Wire.setClock(100000L);
+    #if I2CDEV_IMPLEMENTATION == I2CDEV_ARDUINO_WIRE
+        Wire.begin();
+        Wire.setClock(400000);
+    #elif I2CDEV_IMPLEMENTATION == I2CDEV_BUILTIN_FASTWIRE
+        Fastwire::setup(400, true);
+    #endif
 
-  // I2C Scanner
-  Serial.println("Scanning for I2C devices...");
-  bool deviceFound = false;
-  for (uint8_t addr = 1; addr < 127; addr++) {
-    Wire.beginTransmission(addr);
-    if (Wire.endTransmission() == 0) {
-      Serial.print("I2C device found at address 0x");
-      Serial.println(addr, HEX);
-      deviceFound = true;
-      if (addr == MPU6050_ADDR) {
-        Serial.println("MPU6050 found!");
-      }
+    Serial.begin(115200);
+    while (!Serial);
+
+    Serial.println(F("Initializing I2C devices..."));
+    mpu.initialize();
+    pinMode(INTERRUPT_PIN, INPUT);
+
+    Serial.println(F("Testing device connections..."));
+    Serial.println(mpu.testConnection() ? F("MPU6050 connection successful") : F("MPU6050 connection failed"));
+
+    Serial.println(F("\nSend any character to begin DMP programming and demo: "));
+    while (Serial.available() && Serial.read()); // empty buffer
+    while (!Serial.available());                 // wait for data
+    while (Serial.available() && Serial.read()); // empty buffer again
+
+    Serial.println(F("Initializing DMP..."));
+    devStatus = mpu.dmpInitialize();
+
+    if (devStatus == 0) {
+        mpu.CalibrateAccel(6);
+        mpu.CalibrateGyro(6);
+        mpu.PrintActiveOffsets();
+
+        Serial.println(F("Enabling DMP..."));
+        mpu.setDMPEnabled(true);
+
+        Serial.print(F("Enabling interrupt detection (Arduino external interrupt "));
+        Serial.print(digitalPinToInterrupt(INTERRUPT_PIN));
+        Serial.println(F(")..."));
+        attachInterrupt(digitalPinToInterrupt(INTERRUPT_PIN), dmpDataReady, RISING);
+        mpuIntStatus = mpu.getIntStatus();
+
+        Serial.println(F("DMP ready! Waiting for first interrupt..."));
+        dmpReady = true;
+        packetSize = mpu.dmpGetFIFOPacketSize();
+    } else {
+        Serial.print(F("DMP Initialization failed (code "));
+        Serial.print(devStatus);
+        Serial.println(F(")"));
     }
-    delay(10);
-  }
-  
-  if (!deviceFound) {
-    Serial.println("No I2C devices found. Check connections.");
-  }
-  
-  // Initialize MPU6050 if found at the specified address
-  Wire.beginTransmission(MPU6050_ADDR);
-  Wire.write(PWR_MGMT_1);
-  Wire.write(0);     // 0 wakes up the MPU6050
-  if (Wire.endTransmission(true) != 0) {
-    Serial.println("Failed to initialize MPU6050. Check wiring and power.");
-  }
+
+    pinMode(LED_PIN, OUTPUT);
 }
 
-void loop() {
-  Wire.beginTransmission(MPU6050_ADDR);
-  Wire.write(ACCEL_XOUT_H);
-  Wire.endTransmission(false);
-  Wire.requestFrom(MPU6050_ADDR, 14, true);
-
-  if (Wire.available() == 14) {
-    int16_t accelX = (Wire.read() << 8 | Wire.read());
-    int16_t accelY = (Wire.read() << 8 | Wire.read());
-    int16_t accelZ = (Wire.read() << 8 | Wire.read());
-    Wire.read(); Wire.read();  // Skip temperature
-    int16_t gyroX = (Wire.read() << 8 | Wire.read());
-    int16_t gyroY = (Wire.read() << 8 | Wire.read());
-    int16_t gyroZ = (Wire.read() << 8 | Wire.read());
-
-    // Print values
-    Serial.print("GyroX: ");
-    Serial.println(gyroX);
-    Serial.print("GyroY: ");
-    Serial.println(gyroY);
-    Serial.print("GyroZ: ");
-    Serial.println(gyroZ);
-  } else {
-    Serial.println("Failed to read 14 bytes from MPU6050.");
-  }
-
-  delay(50);
-}
+void loop() {}
