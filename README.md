@@ -29,7 +29,7 @@ These instructions will get you a copy of the project up and running on your loc
 - 1x DS18B20 Temperature sensor
 - 1x DS3231RTC Real time clock
 - 1x GY-NEO6MV2 GPS module
-- 2x Button
+- 2x Buttons
 - Resistors described in the schematic
 - Motorcycle :)
 
