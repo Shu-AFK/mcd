@@ -30,4 +30,14 @@
 #define TX            17
 #define GPS_BAUD_RATE 9600
 
+// Change these to the offsets got by calibration
+#define X_GYRO_OFF
+#define Y_GYRO_OFF
+#define Z_GYRO_OFF
+#define X_ACC_OFF
+#define Y_ACC_OFF
+#define Z_ACC_OFF
+
+#define INTERRUPT_PIN 2
+
 #endif //MCD_CONFIG_H
