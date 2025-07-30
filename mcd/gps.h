@@ -9,7 +9,6 @@
 #include <HardwareSerial.h>
 
 void initGPS();
-void handleGPSTimeButtonPress();
 void oledPrintSpeed();
 void oledPrintDistanceTraveled();
 void oledPrintAverageSpeed();

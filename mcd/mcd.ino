@@ -53,23 +53,6 @@ void loop() {
 
   int startTimeReading = digitalRead(START_TIME_BUTTON_PIN);
 
-  // Debounce logic for the Start Time Button
-  if (startTimeReading != lastStartTimeButtonState) {
-    lastStartTimeDebounceTime = millis();
-  }
-
-  if ((millis() - lastStartTimeDebounceTime) > DEBOUNCE_DELAY) {
-    if (startTimeReading != startTimeButtonState) {
-      startTimeButtonState = startTimeReading;
-
-      if (startTimeButtonState == HIGH) {
-        handleGPSTimeButtonPress();
-      }
-    }
-  }
-
-  lastStartTimeButtonState = startTimeReading;
-
   updateGPS();
 
   if (millis() - lastDisplayRefreshTime >= REFRESH_DELAY) {
