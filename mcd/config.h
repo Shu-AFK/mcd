@@ -26,17 +26,17 @@
 #define START_TIME_BUTTON_PIN 23
 #define DEBOUNCE_DELAY        50
 
-#define RX            16
-#define TX            17
+#define RX_PIN        16
+#define TX_PIN        17
 #define GPS_BAUD_RATE 9600
 
 // Change these to the offsets got by calibration
-#define X_GYRO_OFF
-#define Y_GYRO_OFF
-#define Z_GYRO_OFF
-#define X_ACC_OFF
-#define Y_ACC_OFF
-#define Z_ACC_OFF
+#define X_GYRO_OFF 0
+#define Y_GYRO_OFF 0
+#define Z_GYRO_OFF 0
+#define X_ACC_OFF 0
+#define Y_ACC_OFF 0
+#define Z_ACC_OFF 0
 
 #define INTERRUPT_PIN 2
 

@@ -9,10 +9,6 @@ int skipButtonState = LOW;
 int lastSkipButtonState = LOW;
 unsigned long lastSkipDebounceTime = 0;
 
-int startTimeButtonState = LOW;
-int lastStartTimeButtonState = LOW;
-unsigned long lastStartTimeDebounceTime = 0;
-
 unsigned long lastDisplayRefreshTime = 0;
 
 void setup() {
@@ -32,6 +28,7 @@ void setup() {
 }
 
 void loop() {
+  /*
   int skipReading = digitalRead(SKIP_BUTTON_PIN);
 
   // Debounce logic for the Skip Button
@@ -50,8 +47,14 @@ void loop() {
   }
 
   lastSkipButtonState = skipReading;
+  */
 
-  int startTimeReading = digitalRead(START_TIME_BUTTON_PIN);
+  if (Serial.available() == 0) {
+    while (Serial.available() > 0) {
+      Serial.read();
+    }
+    handleButtonPress();
+  }
 
   updateGPS();
 

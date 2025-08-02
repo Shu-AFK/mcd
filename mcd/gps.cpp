@@ -14,7 +14,7 @@ void updateGPS() {
 }
 
 void initGPS() {
-    GPSSerial.begin(GPS_BAUD_RATE, SERIAL_8N1, RX, TX);
+    GPSSerial.begin(GPS_BAUD_RATE, SERIAL_8N1, RX_PIN, TX_PIN);
 }
 
 void oledPrintSpeed() {
@@ -95,7 +95,7 @@ void oledPrintAverageSpeed() {
     if(totalSpeed != 0) {
         oled.print("Average Speed: ");
         oled.print(String(totalSpeed / speedSamples, 1));
-        oled.print("km/h")
+        oled.print("km/h");
     } else {
         oled.print("Average Speed: N/A");
     }
@@ -116,6 +116,6 @@ void oledPrintAltitude() {
         oled.print(gps.altitude.meters());
         oled.print("m");
     } else {
-        oled.print("Altitude: N/A")
+        oled.print("Altitude: N/A");
     }
 }
