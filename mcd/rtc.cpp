@@ -10,8 +10,18 @@ void initRTC() {
         for(;;);
     }
 
-    // Uncomment to set the RTC to the current compile time (Only need to do once)
-    rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    // Only set the RTC when it has lost power (e.g. first start or after battery change)
+    if (rtc.lostPower()) {
+        Serial.println("RTC lost power, setting time!");
+        rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
+    }
+}
+
+static void print2d(uint8_t v) {
+    if (v < 10) {
+        oled.print('0');
+    }
+    oled.print(v, DEC);
 }
 
 void oledPrintTime() {
@@ -27,11 +37,11 @@ void oledPrintTime() {
 
     // Print time
     oled.setCursor(0, cursorPos);
-    oled.print(now.hour(), DEC);
+    print2d(now.hour());
     oled.print(':');
-    oled.print(now.minute(), DEC);
+    print2d(now.minute());
     oled.print(':');
-    oled.print(now.second(), DEC);
+    print2d(now.second());
 }
 
 void oledPrintDate() {
@@ -47,10 +57,10 @@ void oledPrintDate() {
 
     oled.setCursor(0, cursorPos);
     oled.print(now.year(), DEC);
-    oled.print('/');
-    oled.print(now.day(), DEC);
-    oled.print('/');
-    oled.print(now.month(), DEC);
+    oled.print('-');
+    print2d(now.month());
+    oled.print('-');
+    print2d(now.day());
 }
 
 void oledPrintWeekday() {

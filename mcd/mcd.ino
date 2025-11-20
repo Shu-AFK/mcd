@@ -49,7 +49,7 @@ void loop() {
   lastSkipButtonState = skipReading;
   */
 
-  if (Serial.available() == 0) {
+  if (Serial.available() > 0) {
     while (Serial.available() > 0) {
       Serial.read();
     }
